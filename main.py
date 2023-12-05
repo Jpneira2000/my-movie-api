@@ -14,7 +14,6 @@ movies = [
         'rating': 7.8,
         'category': 'Acción'
     },
-    
     {
         'id': 2,
         'title': 'Avatar',
@@ -60,3 +59,22 @@ def create_movie(id: int = Body(), title: str = Body(), overview: str = Body(), 
         'category': category
     })
     return movies
+
+@app.put('/movies/{id}', tags=['movies'])
+def update_movie(id: int, title: str = Body(), overview: str = Body(), year: str = Body(), rating: float = Body(), category: str = Body()):
+    for item in movies:
+        if item['id'] == id:
+            item['title'] = title
+            item['overview'] = overview
+            item['year'] = year
+            item['rating'] = rating
+            item['category'] = category
+            return {'message': 'Movie updated successfully', 'data': item}
+    return {'message': 'Movie not found'}
+
+@app.delete('/movies/{id}', tags=['movies'])
+def delete_movie(id: int):
+    for item in movies:
+        if item['id'] == id:
+            movies.remove(item)
+            return movies
